@@ -1,81 +1,75 @@
-import Head from 'next/head'
-import { useState, useEffect } from 'react'
-import Header from '@components/Header'
-import Footer from '@components/Footer'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import Head from 'next/head';
 
 export default function Home() {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    const targetDate = new Date('2025-01-17T00:00:00');
-    const interval = setInterval(() => {
-      const now = new Date();
-      const difference = targetDate - now;
-
-      if (difference <= 0) {
-        clearInterval(interval);
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      } else {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        
-        setTimeLeft({ days, hours, minutes, seconds });
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="container">
       <Head>
-        <title>Countdown to January 17!</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Countdown Timer</title>
       </Head>
 
-      <main className="text-center mt-5">
-        <Header title="Countdown to January 17!" />
-
-        <div className="row justify-content-center mt-4">
-          <div className="col-sm-3">
-            <div className="card bg-light">
+      <main>
+        <h1 className="text-center">Countdown Timer</h1>
+        <div className="row justify-content-center">
+          <div className="col-md-3">
+            <div className="card">
               <div className="card-body">
-                <h5 className="card-title">{timeLeft.days}</h5>
-                <p className="card-text">Days</p>
+                <h5 className="card-title">Days</h5>
+                <p className="display-4" id="days"></p>
               </div>
             </div>
           </div>
-          <div className="col-sm-3">
-            <div className="card bg-light">
+          <div className="col-md-3">
+            <div className="card">
               <div className="card-body">
-                <h5 className="card-title">{timeLeft.hours}</h5>
-                <p className="card-text">Hours</p>
+                <h5 className="card-title">Hours</h5>
+                <p className="display-4" id="hours"></p>
               </div>
             </div>
           </div>
-          <div className="col-sm-3">
-            <div className="card bg-light">
+          <div className="col-md-3">
+            <div className="card">
               <div className="card-body">
-                <h5 className="card-title">{timeLeft.minutes}</h5>
-                <p className="card-text">Minutes</p>
+                <h5 className="card-title">Minutes</h5>
+                <p className="display-4" id="minutes"></p>
               </div>
             </div>
           </div>
-          <div className="col-sm-3">
-            <div className="card bg-light">
+          <div className="col-md-3">
+            <div className="card">
               <div className="card-body">
-                <h5 className="card-title">{timeLeft.seconds}</h5>
-                <p className="card-text">Seconds</p>
+                <h5 className="card-title">Seconds</h5>
+                <p className="display-4" id="seconds"></p>
               </div>
             </div>
           </div>
         </div>
       </main>
 
-      <Footer />
+      <script>
+        const targetDate = new Date("January 17, 2025 00:00:00").getTime();
+        const countdownFunction = setInterval(function() {
+          const now = new Date().getTime();
+          const distance = targetDate - now;
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          document.getElementById("days").innerText = days;
+          document.getElementById("hours").innerText = hours;
+          document.getElementById("minutes").innerText = minutes;
+          document.getElementById("seconds").innerText = seconds;
+
+          if (distance < 0) {
+            clearInterval(countdownFunction);
+            document.getElementById("days").innerText = "0";
+            document.getElementById("hours").innerText = "0";
+            document.getElementById("minutes").innerText = "0";
+            document.getElementById("seconds").innerText = "0";
+          }
+        }, 1000);
+      </script>
     </div>
-  )
+  );
 }
